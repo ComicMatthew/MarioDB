@@ -14,8 +14,7 @@ def get_used_file(usage_path):
     if not todo_files:
         error_message = f"W Folderze {todo_folder_path} nie ma zadnego pliku do przetworzenia!"
         show_windows_alert("Brak Pliku", error_message)
-        print(error_message)
-        
+        print(error_message)       
     else:
         todo_file_name = todo_files[0]
         todo_file_path = os.path.join(todo_folder_path, todo_file_name)
@@ -25,7 +24,6 @@ def find_missing_records(database_path, usage_path):
 
     database_wb = openpyxl.load_workbook(database_path)
 
-    
     usage_wb = openpyxl.load_workbook(get_used_file(usage_path))
 
     database_sheet = database_wb['Lagerbestand M0129']
@@ -47,13 +45,12 @@ def find_missing_records(database_path, usage_path):
         if not asset_found and asset_name is not None:
             missing_records.append(asset_name)
 
-    print(f"These records are missing in Lager: {missing_records}" )
+    print(f"Tych elementow nie ma w pliku magazynowym: {missing_records}" )
 
 def update_quantities(database_path, usage_path, done_folder_path):
     try:
         database_wb = openpyxl.load_workbook(database_path)
 
-        
         usage_wb = openpyxl.load_workbook(get_used_file(usage_path))
         #usage_wb = openpyxl.load_workbook(usage_path)
 
@@ -61,6 +58,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
         usage_sheet = usage_wb['Materialliste']
         #print(database_sheet)
         count = 0
+        negative_record = []
         for row in usage_sheet.iter_rows(min_row=6, values_only=True):
             asset_name, used_quantity = row[1], row[4]
             #print(asset_name, used_quantity)
@@ -77,25 +75,29 @@ def update_quantities(database_path, usage_path, done_folder_path):
                         modified_cell = database_sheet.cell(row=index, column=4)
                         modified_cell.value = new_quantity
                         count += 1
-                        print(f"Row processed: {index}, Asset Number: {asset_number}")
+                        print(f"Wiersz zmieniony: {index}, Numer czesci: {asset_number}")
                         if new_quantity < 0:
-                            print(f"!!!!! Row has a negative value: {index} of {new_quantity}, Asset Number: {asset_number} !!!")
-                
-        print(f"This many records were modified: {count}")
-
-        print(f"File saving proces started for: {database_path}")            
-        database_wb.save(database_path)
-        print(f"File was saved under this path: {database_path}")
+                            print(f"!!!!! Elemnt z wiersza: {index} ma UJEMNA wartosc: {new_quantity}. Numer czesci: {asset_number} !!!")
+                            negative_record.append(asset_number)
+                            
+        print(f"Liczba elementow ktore zostaly zedytowane: {count}")
+        print(f"Te elementy na magazynie maja ujemna wartosc: {negative_record}")
+        try:
+            print(f"Porces zapisu pliku rozpoczety: {database_path}")            
+            database_wb.save(database_path)
+            print(f"Proces zapisu zakonczony: {database_path}")
+            done_file_path = os.path.join(done_folder_path) #Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia
         
-        done_file_path = os.path.join(done_folder_path) #Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia
+            shutil.move(get_used_file(usage_path), done_file_path)
+            print(f"Plik z materialami obrobiony i przeniesiony do folderu: {done_file_path}")
+        except PermissionError as e:
+            print(f"Error: {e}")
+            show_windows_alert("Ograniczony dostep do pliku", f"Baza danych nie zostala zapisana, gdyz dostep byl ograniczony. Prawdopodobnie Excel z baza danych jest otwarty. {str(e)}. Plik NIE zostal zapisany. Zamknij go i odpal skrypt ponownie")
         
-        shutil.move(get_used_file(usage_path), done_file_path)
-        print(f"Material file was finished and moved to the folder: {done_file_path}")
+        
     except shutil.Error as e:
         print(f"Error: {e}")
-        show_windows_alert("W Folderze istnieje juz plik o tej nazwie", f"Baza danych Zostala zmieniona, wiec musisz tylko przeniesc plik do folderu '{done_file_path}': {str(e)}")
- 
-
+        show_windows_alert("W Folderze istnieje juz plik o tej nazwie", f"Baza danych Zostala zaktualizowana, wiec musisz tylko przeniesc plik do folderu '{done_file_path}': {str(e)}")
 
 
 
@@ -112,7 +114,7 @@ if __name__ == "__main__":
 
 #Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia
 #Dodawanie
-    #Alert ze jest minus
-    #alerty bledow
+    #Alert ze jest minus X
+    #alerty bledow X 
     
     
