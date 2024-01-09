@@ -1,30 +1,16 @@
+from my_functions import get_used_file, show_windows_alert
+from config import database_file_path, usage_file_path, done_folder_path
 import openpyxl
 import os
 import shutil
-import ctypes
 
-def show_windows_alert(title, message):
-    ctypes.windll.user32.MessageBoxW(0, message, title, 1)
-
-
-def get_used_file(usage_path):
-        
-    todo_folder_path = os.path.join(usage_path)
-    todo_files = [f for f in os.listdir(todo_folder_path) if f.endswith(".xlsx")]
-    if not todo_files:
-        error_message = f"W Folderze {todo_folder_path} nie ma zadnego pliku do przetworzenia!"
-        show_windows_alert("Brak Pliku", error_message)
-        print(error_message)       
-    else:
-        todo_file_name = todo_files[0]
-        todo_file_path = os.path.join(todo_folder_path, todo_file_name)
-        return todo_file_path
+from datetime import datetime
 
 def find_missing_records(database_path, usage_path):
 
     database_wb = openpyxl.load_workbook(database_path)
-
-    usage_wb = openpyxl.load_workbook(get_used_file(usage_path))
+    todo_file_path, todo_file_name = get_used_file(usage_path)
+    usage_wb = openpyxl.load_workbook(todo_file_path)
 
     database_sheet = database_wb['Lagerbestand M0129']
     usage_sheet = usage_wb['Materialliste']
@@ -50,8 +36,8 @@ def find_missing_records(database_path, usage_path):
 def update_quantities(database_path, usage_path, done_folder_path):
     try:
         database_wb = openpyxl.load_workbook(database_path)
-
-        usage_wb = openpyxl.load_workbook(get_used_file(usage_path))
+        todo_file_path, todo_file_name = get_used_file(usage_path)
+        usage_wb = openpyxl.load_workbook(todo_file_path)
         #usage_wb = openpyxl.load_workbook(usage_path)
 
         database_sheet = database_wb['Lagerbestand M0129']
@@ -86,9 +72,9 @@ def update_quantities(database_path, usage_path, done_folder_path):
             print(f"Porces zapisu pliku rozpoczety: {database_path}")            
             database_wb.save(database_path)
             print(f"Proces zapisu zakonczony: {database_path}")
-            done_file_path = os.path.join(done_folder_path) #Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia
-        
-            shutil.move(get_used_file(usage_path), done_file_path)
+            new_name = todo_file_name.split(".")[0] + datetime.now().strftime("%Y-%m-%d %H-%M-%S") + "." + todo_file_name.split(".")[1]
+            done_file_path = os.path.join(done_folder_path, new_name)
+            shutil.move(todo_file_path, done_file_path)
             print(f"Plik z materialami obrobiony i przeniesiony do folderu: {done_file_path}")
         except PermissionError as e:
             print(f"Error: {e}")
@@ -104,15 +90,12 @@ def update_quantities(database_path, usage_path, done_folder_path):
 if __name__ == "__main__":
     print("Script starting")
     #Replace these paths with the actual paths to your Excel files
-    database_file_path = "Lagerbestand-M0129.xlsx"
-    usage_file_path = "Zuzyty Material"
-    done_folder_path = "Gotowe"
     find_missing_records(database_file_path, usage_file_path)
     update_quantities(database_file_path, usage_file_path, done_folder_path)
     
     input("Press Enter to exit...")
 
-#Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia
+#Ogarnac jezeli juz plik istnieje. Unikatowe umie tworzyc czy cos - do zrobienia !! 
 #Dodawanie
     #Alert ze jest minus X
     #alerty bledow X 
