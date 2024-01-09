@@ -1,5 +1,5 @@
 from my_functions import get_used_file, show_windows_alert
-from config import database_file_path, usage_file_path, done_folder_path
+from config import database_file_path, usage_subtraction_file_path, done_folder_path
 import openpyxl
 import os
 import shutil
@@ -31,7 +31,7 @@ def find_missing_records(database_path, usage_path):
         if not asset_found and asset_name is not None:
             missing_records.append(asset_name)
 
-    print(f"Tych elementow nie ma w pliku magazynowym: {missing_records}" )
+    print(f"Tych elementow nie ma w pliku magazynowym: {missing_records} a sa dostepne w pliku: {todo_file_name}" )
 
 def update_quantities(database_path, usage_path, done_folder_path):
     try:
@@ -75,6 +75,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
             new_name = todo_file_name.split(".")[0] + datetime.now().strftime("%Y-%m-%d %H-%M-%S") + "." + todo_file_name.split(".")[1]
             done_file_path = os.path.join(done_folder_path, new_name)
             shutil.move(todo_file_path, done_file_path)
+            #os.rename(todo_file_path, done_file_path)
             print(f"Plik z materialami obrobiony i przeniesiony do folderu: {done_file_path}")
         except PermissionError as e:
             print(f"Error: {e}")
@@ -90,8 +91,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
 if __name__ == "__main__":
     print("Script starting")
     #Replace these paths with the actual paths to your Excel files
-    find_missing_records(database_file_path, usage_file_path)
-    update_quantities(database_file_path, usage_file_path, done_folder_path)
+    find_missing_records(database_file_path, usage_subtraction_file_path)
+    update_quantities(database_file_path, usage_subtraction_file_path, done_folder_path)
     
     input("Press Enter to exit...")
 
