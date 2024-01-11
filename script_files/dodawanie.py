@@ -1,5 +1,5 @@
 from my_functions import get_used_file, show_windows_alert
-from config import database_file_path, usage_subtraction_file_path, done_folder_path
+from config import database_file_path, usage_addition_file_path, done_folder_path
 import openpyxl
 import os
 import shutil
@@ -16,8 +16,8 @@ def find_missing_records(database_path, usage_path):
         usage_sheet = usage_wb['Materialliste']
         missing_records = []
 
-        for usage_row in usage_sheet.iter_rows(min_row=6, values_only=True):
-            asset_name, _ = usage_row[1], usage_row[4]
+        for usage_row in usage_sheet.iter_rows(min_row=2, values_only=True):
+            asset_name, _ = usage_row[1], usage_row[3]
 
             asset_found = False  
             for database_row in database_sheet.iter_rows(min_row=2, max_row=database_sheet.max_row, values_only=True):
@@ -48,8 +48,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
         #print(database_sheet)
         count = 0
         negative_record = []
-        for row in usage_sheet.iter_rows(min_row=6, values_only=True):
-            asset_name, used_quantity = row[1], row[4]
+        for row in usage_sheet.iter_rows(min_row=2, values_only=True):
+            asset_name, used_quantity = row[1], row[3]
             #print(asset_name, used_quantity)
             #print(row)
             
@@ -60,7 +60,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
                     
                     if current_quantity is not None and used_quantity is not None:
                         #new_quantity = max(current_quantity - used_quantity, 0)
-                        new_quantity = current_quantity - used_quantity
+                        new_quantity = current_quantity + used_quantity
                         modified_cell = database_sheet.cell(row=index, column=4)
                         modified_cell.value = new_quantity
                         count += 1
@@ -91,16 +91,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
     except KeyError as e:
         print(f"Error: {e}")
         show_windows_alert("Skoroszyt Excela nie nazywa sie 'Materialliste'", f"{str(e)}")
-
-
 if __name__ == "__main__":
     print("Script starting")
-    find_missing_records(database_file_path, usage_subtraction_file_path)
-    update_quantities(database_file_path, usage_subtraction_file_path, done_folder_path)
-    
+    find_missing_records(database_file_path, usage_addition_file_path)
+    update_quantities(database_file_path, usage_addition_file_path, done_folder_path)
     input("Press Enter to exit...")
-
-#jak sheet sie nie nazywa jak nalezy - alert
-
-    
-    
