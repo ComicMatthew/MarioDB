@@ -1,3 +1,3 @@
 @echo off
 cd script_files
-python ui.py
+start "" pythonw ui.py

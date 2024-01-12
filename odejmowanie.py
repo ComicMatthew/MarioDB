@@ -1,5 +1,5 @@
 from my_functions import get_used_file, show_windows_alert, read_config
-#from config import database_file_path, usage_addition_file_path, done_folder_path
+#from config import database_file_path, usage_subtraction_file_path, done_folder_path
 import openpyxl
 import os
 import shutil
@@ -9,7 +9,7 @@ from datetime import datetime
 config_values = read_config("config.json")
 
 database_file_path = config_values.get('database_file_path', '')
-usage_addition_file_path = config_values.get('usage_addition_file_path', '')
+usage_subtraction_file_path = config_values.get('usage_subtraction_file_path', '')
 done_folder_path = config_values.get('done_folder_path', '')
 
 def find_missing_records(database_path, usage_path):
@@ -22,8 +22,8 @@ def find_missing_records(database_path, usage_path):
         usage_sheet = usage_wb['Materialliste']
         missing_records = []
 
-        for usage_row in usage_sheet.iter_rows(min_row=2, values_only=True):
-            asset_name, _ = usage_row[1], usage_row[3]
+        for usage_row in usage_sheet.iter_rows(min_row=6, values_only=True):
+            asset_name, _ = usage_row[1], usage_row[4]
 
             asset_found = False
             for database_row in database_sheet.iter_rows(min_row=2, max_row=database_sheet.max_row, values_only=True):
@@ -45,7 +45,7 @@ def find_missing_records(database_path, usage_path):
             "Skoroszyt Excela nie nazywa sie 'Materialliste'", f"{str(e)}")
     except FileNotFoundError as e:
         show_windows_alert("Brakuje pliku", f"{str(e)}")
-
+    
 def update_quantities(database_path, usage_path, done_folder_path):
     try:
         database_wb = openpyxl.load_workbook(database_path)
@@ -58,8 +58,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
         # print(database_sheet)
         count = 0
         negative_record = []
-        for row in usage_sheet.iter_rows(min_row=2, values_only=True):
-            asset_name, used_quantity = row[1], row[3]
+        for row in usage_sheet.iter_rows(min_row=6, values_only=True):
+            asset_name, used_quantity = row[1], row[4]
             # print(asset_name, used_quantity)
             # print(row)
 
@@ -70,7 +70,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
 
                     if current_quantity is not None and used_quantity is not None:
                         # new_quantity = max(current_quantity - used_quantity, 0)
-                        new_quantity = current_quantity + used_quantity
+                        new_quantity = current_quantity - used_quantity
                         modified_cell = database_sheet.cell(
                             row=index, column=4)
                         modified_cell.value = new_quantity
@@ -113,7 +113,10 @@ def update_quantities(database_path, usage_path, done_folder_path):
 
 if __name__ == "__main__":
     print("Script starting")
-    find_missing_records(database_file_path, usage_addition_file_path)
+    find_missing_records(database_file_path, usage_subtraction_file_path)
     update_quantities(database_file_path,
-                      usage_addition_file_path, done_folder_path)
+                      usage_subtraction_file_path, done_folder_path)
+    print(50*"-")
     #input("Press Enter to exit...")
+
+# jak sheet sie nie nazywa jak nalezy - alert

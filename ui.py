@@ -1,8 +1,9 @@
 import tkinter as tk
+from tkinter.scrolledtext import ScrolledText
 import subprocess
 import sys
 import json
-from my_functions import read_config
+from my_functions import read_config, show_windows_alert
 
 config_values = read_config("config.json")
 database_file_path = config_values.get('database_file_path', '')
@@ -22,18 +23,31 @@ def save_config():
     # Write the updated configuration to the config.json file
     with open('config.json', 'w') as json_file:
         json.dump(config_data, json_file, indent=4)
-
+    #show_windows_alert("Konfiguracja zmieniona", "Konfiguracja zostala zmieniona. Sprawdz czy nazwy folderow czy pliku sa poprawne")
+        
 def run_odejmowanie():
     save_config()
-    subprocess.run([sys.executable, "./odejmowanie.py"])
+    run_command("./odejmowanie.py")
 
 def run_dodawanie():
     save_config()
-    subprocess.run([sys.executable, "./dodawanie.py"])
+    run_command("./dodawanie.py")
+
+def run_command(command):
+    # Run the command and redirect stdout to the Text widget
+    try:
+        result = subprocess.run([sys.executable, command], text=True, capture_output=True)
+        log_text.insert(tk.END, result.stdout)
+        log_text.insert(tk.END, result.stderr)
+        log_text.see(tk.END)
+    except Exception as e:
+        log_text.insert(tk.END, f"Error: {e}\n")
+        log_text.see(tk.END)
 
 # Create the main window
 root = tk.Tk()
 root.title("Baza Danych 3000")
+
 
 # Create entry widgets for each variable
 label_database_file_path = tk.Label(root, text="Sciezka do Folderu z baza danych:")
@@ -53,6 +67,10 @@ entry_usage_addition_file_path.insert(0, usage_addition_file_path)
 label_done_folder_path = tk.Label(root, text="Sciezka do Folderu po przetworzeniu:")
 entry_done_folder_path = tk.Entry(root)
 entry_done_folder_path.insert(0, done_folder_path)
+
+# Create Text widget for logs
+log_text = ScrolledText(root, wrap=tk.WORD, height=30, width=50)
+log_text.grid(row=7, column=0, columnspan=2, pady=10)
 
 # Create buttons
 button_save = tk.Button(root, text="Zapisz konfiguracje", command=save_config)
