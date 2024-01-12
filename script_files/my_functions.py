@@ -1,5 +1,6 @@
 import os
 import ctypes
+import json
 
 def show_windows_alert(title, message):
     ctypes.windll.user32.MessageBoxW(0, message, title, 1)
@@ -18,3 +19,7 @@ def get_used_file(usage_path):
         todo_file_path = os.path.join(todo_folder_path, todo_file_name)
         return todo_file_path, todo_file_name
     
+def read_config(file_path):
+    with open(file_path, 'r') as file:
+        config_data = json.load(file)
+    return config_data

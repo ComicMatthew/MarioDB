@@ -1,0 +1,6 @@
+{
+    "database_file_path": "..\\Lagerbestand-M0129.xlsx",
+    "usage_subtraction_file_path": "..\\Zuzyty Material",
+    "usage_addition_file_path": "..\\Material do dodania",
+    "done_folder_path": "..\\Gotowe"
+}
