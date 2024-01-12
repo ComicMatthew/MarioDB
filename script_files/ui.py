@@ -5,7 +5,6 @@ import json
 from my_functions import read_config
 
 config_values = read_config("config.json")
-print(config_values)
 database_file_path = config_values.get('database_file_path', '')
 usage_subtraction_file_path = config_values.get('usage_subtraction_file_path', '')
 done_folder_path = config_values.get('done_folder_path', '')
@@ -37,30 +36,30 @@ root = tk.Tk()
 root.title("Baza Danych 3000")
 
 # Create entry widgets for each variable
-label_database_file_path = tk.Label(root, text="Database File Path:")
+label_database_file_path = tk.Label(root, text="Sciezka do Folderu z baza danych:")
 entry_database_file_path = tk.Entry(root)
 entry_database_file_path.insert(0, database_file_path)
 
 label_usage_subtraction_file_path = tk.Label(
-    root, text="Usage Subtraction File Path:")
+    root, text="Sciezka do Folderu do odejmowania:")
 entry_usage_subtraction_file_path = tk.Entry(root)
 entry_usage_subtraction_file_path.insert(0, usage_subtraction_file_path)
 
 label_usage_addition_file_path = tk.Label(
-    root, text="Usage Addition File Path:")
+    root, text="Sciezka do Folderu do dodawania:")
 entry_usage_addition_file_path = tk.Entry(root)
 entry_usage_addition_file_path.insert(0, usage_addition_file_path)
 
-label_done_folder_path = tk.Label(root, text="Done Folder Path:")
+label_done_folder_path = tk.Label(root, text="Sciezka do Folderu po przetworzeniu:")
 entry_done_folder_path = tk.Entry(root)
 entry_done_folder_path.insert(0, done_folder_path)
 
 # Create buttons
-button_save = tk.Button(root, text="Save Configuration", command=save_config)
+button_save = tk.Button(root, text="Zapisz konfiguracje", command=save_config)
 button_odejmowanie = tk.Button(
-    root, text="Run odejmowanie.py", command=run_odejmowanie)
+    root, text="Odejmowanie", command=run_odejmowanie)
 button_dodawanie = tk.Button(
-    root, text="Run dodawanie.py", command=run_dodawanie)
+    root, text="Dodawanie", command=run_dodawanie)
 
 # Grid layout for widgets
 label_database_file_path.grid(row=0, column=0, pady=5, padx=5, sticky=tk.W)
