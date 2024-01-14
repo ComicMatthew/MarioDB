@@ -12,7 +12,7 @@ done_folder_path = config_values.get('done_folder_path', '')
 usage_addition_file_path = config_values.get('usage_addition_file_path', '')
 
 def save_config():
-    # Update the variables in the config module
+    
     config_data = {
         "database_file_path": entry_database_file_path.get(),
         "usage_subtraction_file_path": entry_usage_subtraction_file_path.get(),
@@ -20,7 +20,7 @@ def save_config():
         "done_folder_path": entry_done_folder_path.get()
     }
 
-    # Write the updated configuration to the config.json file
+    
     with open('config.json', 'w') as json_file:
         json.dump(config_data, json_file, indent=4)
     #show_windows_alert("Konfiguracja zmieniona", "Konfiguracja zostala zmieniona. Sprawdz czy nazwy folderow czy pliku sa poprawne")
