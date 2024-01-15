@@ -1,16 +1,19 @@
-from my_functions import get_used_file, show_windows_alert, read_config
-#from config import database_file_path, usage_addition_file_path, done_folder_path
+from my_functions import get_used_file, show_alert, read_config
+# from config import database_file_path, usage_addition_file_path, done_folder_path
 import openpyxl
 import os
 import shutil
+import sys
 
 from datetime import datetime
 
-config_values = read_config("config.json")
+config_values = read_config("config.json") if sys.platform.startswith(
+    'win') else read_config("config_mac.json")
 
 database_file_path = config_values.get('database_file_path', '')
 usage_addition_file_path = config_values.get('usage_addition_file_path', '')
 done_folder_path = config_values.get('done_folder_path', '')
+
 
 def find_missing_records(database_path, usage_path):
     try:
@@ -41,10 +44,11 @@ def find_missing_records(database_path, usage_path):
             f"Tych elementow nie ma w pliku magazynowym: {missing_records} a sa dostepne w pliku: {todo_file_name}")
     except KeyError as e:
         print(f"Error: {e}")
-        show_windows_alert(
+        show_alert(
             "Skoroszyt Excela nie nazywa sie 'Materialliste'", f"{str(e)}")
     except FileNotFoundError as e:
-        show_windows_alert("Brakuje pliku", f"{str(e)}")
+        show_alert("Brakuje pliku", f"{str(e)}")
+
 
 def update_quantities(database_path, usage_path, done_folder_path):
     try:
@@ -98,16 +102,16 @@ def update_quantities(database_path, usage_path, done_folder_path):
                 f"Plik z materialami obrobiony i przeniesiony do folderu: {done_file_path}")
         except PermissionError as e:
             print(f"Error: {e}")
-            show_windows_alert("Ograniczony dostep do pliku",
-                               f"Baza danych nie zostala zapisana, gdyz dostep byl ograniczony. Prawdopodobnie Excel z baza danych jest otwarty. {str(e)}. Plik NIE zostal zapisany. Zamknij go i odpal skrypt ponownie")
+            show_alert("Ograniczony dostep do pliku",
+                       f"Baza danych nie zostala zapisana, gdyz dostep byl ograniczony. Prawdopodobnie Excel z baza danych jest otwarty. {str(e)}. Plik NIE zostal zapisany. Zamknij go i odpal skrypt ponownie")
 
     except shutil.Error as e:
         print(f"Error: {e}")
-        show_windows_alert("W Folderze istnieje juz plik o tej nazwie",
-                           f"Baza danych Zostala zaktualizowana, wiec musisz tylko przeniesc plik do folderu '{done_file_path}': {str(e)}")
+        show_alert("W Folderze istnieje juz plik o tej nazwie",
+                   f"Baza danych Zostala zaktualizowana, wiec musisz tylko przeniesc plik do folderu '{done_file_path}': {str(e)}")
     except KeyError as e:
         print(f"Error: {e}")
-        show_windows_alert(
+        show_alert(
             "Skoroszyt Excela nie nazywa sie 'Materialliste'", f"{str(e)}")
 
 
@@ -117,4 +121,4 @@ if __name__ == "__main__":
     update_quantities(database_file_path,
                       usage_addition_file_path, done_folder_path)
     print(50*"-")
-    #input("Press Enter to exit...")
+    # input("Press Enter to exit...")
