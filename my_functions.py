@@ -1,12 +1,9 @@
 import os
-import ctypes
 import json
 import tkinter as tk
 from tkinter import messagebox
 
 
-def show_windows_alert(title, message):
-    ctypes.windll.user32.MessageBoxW(0, message, title, 1)
 
 
 def show_alert(title, message):
@@ -24,7 +21,7 @@ def get_used_file(usage_path):
         todo_folder_path) if f.endswith(".xlsx")]
     if not todo_files:
         error_message = f"W Folderze {todo_folder_path} nie ma zadnego pliku do przetworzenia!"
-        show_windows_alert("Brak Pliku", error_message)
+        show_alert("Brak Pliku", error_message)
         print(error_message)
     else:
         todo_file_name = todo_files[0]
