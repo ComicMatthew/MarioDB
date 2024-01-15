@@ -1,4 +1,4 @@
-from my_functions import get_used_file, show_alert, read_config
+from my_functions import get_used_file, show_windows_alert, read_config
 # from config import database_file_path, usage_subtraction_file_path, done_folder_path
 import openpyxl
 import os
@@ -37,7 +37,6 @@ def find_missing_records(database_path, usage_path):
                     asset_found = True
                     break
 
-            # Check if asset_name was not found in the database
             if not asset_found and asset_name is not None:
                 missing_records.append(asset_name)
 
@@ -123,5 +122,3 @@ if __name__ == "__main__":
                       usage_subtraction_file_path, done_folder_path)
     print(50*"-")
     # input("Press Enter to exit...")
-
-# jak sheet sie nie nazywa jak nalezy - alert
