@@ -1,5 +1,4 @@
-from my_functions import get_used_file, show_windows_alert, read_config
-# from config import database_file_path, usage_subtraction_file_path, done_folder_path
+from my_functions import get_used_file, show_alert, read_config
 import openpyxl
 import os
 import shutil
