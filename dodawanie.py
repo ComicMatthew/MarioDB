@@ -102,7 +102,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
             print(f"Error: {e}")
             show_alert("Ograniczony dostep do pliku",
                        f"Baza danych nie zostala zapisana, gdyz dostep byl ograniczony. Prawdopodobnie Excel z baza danych jest otwarty. {str(e)}. Plik NIE zostal zapisany. Zamknij go i odpal skrypt ponownie")
-
+        except TypeError as e:
+            show_alert(f"W pliku istnieja metry i nie policzylem: {e}")
     except shutil.Error as e:
         print(f"Error: {e}")
         show_alert("W Folderze istnieje juz plik o tej nazwie",
