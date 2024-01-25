@@ -114,7 +114,8 @@ def update_quantities(database_path, usage_path, done_folder_path):
         show_alert(
             "Skoroszyt Excela nie nazywa sie 'Materialliste'", f"{str(e)}")
     except TypeError as e:
-        show_alert(f"W pliku istnieja metry i nie policzylem: {e}")
+        show_alert("W excelu nie bylo podanych numerow",
+                   f"W pliku istnieja metry i nie policzylem: {e}")
 
 
 if __name__ == "__main__":
