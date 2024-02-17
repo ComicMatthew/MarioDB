@@ -4,8 +4,7 @@ import subprocess
 import sys
 import json
 from my_functions import read_config
-from odejmowanie import main as main_odejmowanie
-from dodawanie import main as main_dodawanie
+
 
 config_values = read_config("config.json") if sys.platform.startswith(
     'win') else read_config("config_mac.json")
