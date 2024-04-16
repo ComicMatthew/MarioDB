@@ -73,7 +73,7 @@ root.title("Baza Danych 3000")
 
 # Create entry widgets for each variable
 label_database_file_path = tk.Label(
-    root, text="Sciezka do Folderu z baza danych:")
+    root, text="Sciezka do baza danych:")
 entry_database_file_path = tk.Entry(root)
 entry_database_file_path.insert(0, database_file_path)
 
@@ -103,17 +103,17 @@ entry_usage_workdatasheet = tk.Entry(root)
 entry_usage_workdatasheet.insert(0, usage_workdatasheet)
 
 label_substraction_start_row = tk.Label(
-    root, text="Wiersz do odejmowania")
+    root, text="Numer wiersza do odejmowania")
 entry_substraction_start_row = tk.Entry(root)
 entry_substraction_start_row.insert(0, substraction_start_row)
 
 label_addition_start_row = tk.Label(
-    root, text="Wiersz do dodawania")
+    root, text="Numer wiersza do odejmowania")
 entry_addition_start_row = tk.Entry(root)
 entry_addition_start_row.insert(0, addition_start_row)
 
 label_database_start_row = tk.Label(
-    root, text="Wiersz do bazy")
+    root, text="Numer wiersza w bazie danych")
 entry_database_start_row = tk.Entry(root)
 entry_database_start_row.insert(0, database_start_row)
 
@@ -133,33 +133,34 @@ button_dodawanie = tk.Button(
 label_database_file_path.grid(row=0, column=0, pady=5, padx=5, sticky=tk.W)
 entry_database_file_path.grid(row=0, column=1, pady=5, padx=5, sticky=tk.W)
 
+label_database_start_row.grid(row=1, column=0, pady=5, padx=5, sticky=tk.W)
+entry_database_start_row.grid(row=1, column=1, pady=5, padx=5, sticky=tk.W)
+
+label_usage_workdatasheet.grid(row=2, column=0, pady=5, padx=5, sticky=tk.W)
+entry_usage_workdatasheet.grid(row=2, column=1, pady=5, padx=5, sticky=tk.W)
+
 label_usage_subtraction_file_path.grid(
-    row=1, column=0, pady=5, padx=5, sticky=tk.W)
+    row=3, column=0, pady=5, padx=5, sticky=tk.W)
 entry_usage_subtraction_file_path.grid(
-    row=1, column=1, pady=5, padx=5, sticky=tk.W)
+    row=3, column=1, pady=5, padx=5, sticky=tk.W)
+
+label_substraction_start_row.grid(row=4, column=0, pady=5, padx=5, sticky=tk.W)
+entry_substraction_start_row.grid(row=4, column=1, pady=5, padx=5, sticky=tk.W)
 
 label_usage_addition_file_path.grid(
-    row=2, column=0, pady=5, padx=5, sticky=tk.W)
+    row=5, column=0, pady=5, padx=5, sticky=tk.W)
 entry_usage_addition_file_path.grid(
-    row=2, column=1, pady=5, padx=5, sticky=tk.W)
+    row=5, column=1, pady=5, padx=5, sticky=tk.W)
 
-label_done_folder_path.grid(row=3, column=0, pady=5, padx=5, sticky=tk.W)
-entry_done_folder_path.grid(row=3, column=1, pady=5, padx=5, sticky=tk.W)
+label_addition_start_row.grid(row=6, column=0, pady=5, padx=5, sticky=tk.W)
+entry_addition_start_row.grid(row=6, column=1, pady=5, padx=5, sticky=tk.W)
 
-label_usage_worksheet.grid(row=4, column=0, pady=5, padx=5, sticky=tk.W)
-entry_usage_worksheet.grid(row=4, column=1, pady=5, padx=5, sticky=tk.W)
+label_usage_worksheet.grid(row=7, column=0, pady=5, padx=5, sticky=tk.W)
+entry_usage_worksheet.grid(row=7, column=1, pady=5, padx=5, sticky=tk.W)
 
-label_usage_workdatasheet.grid(row=5, column=0, pady=5, padx=5, sticky=tk.W)
-entry_usage_workdatasheet.grid(row=5, column=1, pady=5, padx=5, sticky=tk.W)
+label_done_folder_path.grid(row=8, column=0, pady=5, padx=5, sticky=tk.W)
+entry_done_folder_path.grid(row=8, column=1, pady=5, padx=5, sticky=tk.W)
 
-label_substraction_start_row.grid(row=6, column=0, pady=5, padx=5, sticky=tk.W)
-entry_substraction_start_row.grid(row=6, column=1, pady=5, padx=5, sticky=tk.W)
-
-label_addition_start_row.grid(row=7, column=0, pady=5, padx=5, sticky=tk.W)
-entry_addition_start_row.grid(row=7, column=1, pady=5, padx=5, sticky=tk.W)
-
-label_database_start_row.grid(row=8, column=0, pady=5, padx=5, sticky=tk.W)
-entry_database_start_row.grid(row=8, column=1, pady=5, padx=5, sticky=tk.W)
 
 button_save.grid(row=9, column=0, columnspan=2, pady=10)
 button_odejmowanie.grid(row=10, column=0, columnspan=2, pady=5)

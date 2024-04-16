@@ -1,8 +1,8 @@
 {
-    "database_file_path": "../Lagerbestand-M0129.xlsx",
-    "usage_subtraction_file_path": "../Zuzyty Material",
+    "database_file_path": "/Users/mateuszstaniek/Desktop/Mario baza/Lagerbestand-M0129 (1).xlsx",
+    "usage_subtraction_file_path": "/Users/mateuszstaniek/Desktop/Mario baza/material do odejmowania",
     "usage_addition_file_path": "../Material do dodania",
-    "done_folder_path": "../Gotowe",
+    "done_folder_path": "/Users/mateuszstaniek/Desktop/Mario baza/gotowe",
     "usage_worksheet": "Materialliste",
     "usage_workdatasheet": "Lagerbestand M0129",
     "substraction_start_row": "6",
