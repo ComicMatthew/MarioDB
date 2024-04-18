@@ -97,6 +97,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
             f"Te elementy na magazynie maja ujemna wartosc: {negative_record}")
         try:
             print(f"Porces zapisu pliku rozpoczety: {database_path}")
+            usage_wb.close()
             database_wb.close()
             database_wb.save(database_path)
             print(f"Proces zapisu zakonczony: {database_path}")
