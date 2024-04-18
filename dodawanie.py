@@ -11,6 +11,7 @@ config_values = read_config("config.json") if sys.platform.startswith(
 
 database_file_path = config_values.get('database_file_path', '')
 usage_addition_file_path = config_values.get('usage_addition_file_path', '')
+
 done_folder_path = config_values.get('done_folder_path', '')
 
 usage_worksheet = config_values.get('usage_worksheet', '')
@@ -79,6 +80,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
                     if current_quantity is not None and used_quantity is not None:
                         # new_quantity = max(current_quantity - used_quantity, 0)
                         new_quantity = current_quantity + used_quantity
+                        # Here we could modify it to: int(used_quantity.rstrip("m"))
                         modified_cell = database_sheet.cell(
                             row=index, column=4)
                         modified_cell.value = new_quantity
