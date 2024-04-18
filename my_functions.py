@@ -16,7 +16,7 @@ def get_used_file(usage_path):
 
     todo_folder_path = os.path.join(usage_path)
     todo_files = [f for f in os.listdir(
-        todo_folder_path) if f.endswith(".xlsx")]
+        todo_folder_path) if f.endswith(".xlsx") or f.endswith(".xlsm")]
     if not todo_files:
         error_message = f"W Folderze {todo_folder_path} nie ma zadnego pliku do przetworzenia!"
         show_alert("Brak Pliku", error_message)
