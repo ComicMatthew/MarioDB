@@ -80,6 +80,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
                     if current_quantity is not None and used_quantity is not None:
                         # new_quantity = max(current_quantity - used_quantity, 0)
                         new_quantity = current_quantity - used_quantity
+                        # Here we could modify it to: int(used_quantity.rstrip("m"))
                         modified_cell = database_sheet.cell(
                             row=index, column=4)
                         modified_cell.value = new_quantity
