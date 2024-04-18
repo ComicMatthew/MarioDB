@@ -1,6 +1,11 @@
 {
-    "database_file_path": "../Lagerbestand-M0129.xlsx",
-    "usage_subtraction_file_path": "../Zuzyty Material",
-    "usage_addition_file_path": "../Material do dodania",
-    "done_folder_path": "../Gotowe"
+  "database_file_path": "../Lagerbestand-M012.xlsx",
+  "usage_workdatasheet": "Lagerbestand M0129",
+  "database_start_row": 2,
+  "usage_subtraction_file_path": "../Zuzyty Material",
+  "substraction_start_row": 6,
+  "usage_addition_file_path": "../Material do dodania",
+  "addition_start_row": 2,
+  "usage_worksheet": "Materialliste",
+  "done_folder_path": "../Gotowe"
 }

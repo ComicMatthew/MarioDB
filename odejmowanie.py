@@ -14,6 +14,12 @@ usage_subtraction_file_path = config_values.get(
     'usage_subtraction_file_path', '')
 done_folder_path = config_values.get('done_folder_path', '')
 
+usage_worksheet = config_values.get('usage_worksheet', '')
+usage_workdatasheet = config_values.get('usage_workdatasheet', '')
+
+substraction_start_row = int(config_values.get('substraction_start_row', ''))
+database_start_row = int(config_values.get('database_start_row', ''))
+
 
 def find_missing_records(database_path, usage_path):
     try:
@@ -21,15 +27,15 @@ def find_missing_records(database_path, usage_path):
         todo_file_path, todo_file_name = get_used_file(usage_path)
         usage_wb = openpyxl.load_workbook(todo_file_path)
 
-        database_sheet = database_wb['Lagerbestand M0129']
-        usage_sheet = usage_wb['Materialliste']
+        database_sheet = database_wb[usage_workdatasheet]
+        usage_sheet = usage_wb[usage_worksheet]
         missing_records = []
 
-        for usage_row in usage_sheet.iter_rows(min_row=6, values_only=True):
+        for usage_row in usage_sheet.iter_rows(min_row=substraction_start_row, values_only=True):
             asset_name, _ = usage_row[1], usage_row[4]
 
             asset_found = False
-            for database_row in database_sheet.iter_rows(min_row=2, max_row=database_sheet.max_row, values_only=True):
+            for database_row in database_sheet.iter_rows(min_row=database_start_row, max_row=database_sheet.max_row, values_only=True):
                 asset_number = database_row[1]
 
                 if asset_number == asset_name:
@@ -56,17 +62,17 @@ def update_quantities(database_path, usage_path, done_folder_path):
         usage_wb = openpyxl.load_workbook(todo_file_path)
         # usage_wb = openpyxl.load_workbook(usage_path)
 
-        database_sheet = database_wb['Lagerbestand M0129']
-        usage_sheet = usage_wb['Materialliste']
+        database_sheet = database_wb[usage_workdatasheet]
+        usage_sheet = usage_wb[usage_worksheet]
         # print(database_sheet)
         count = 0
         negative_record = []
-        for row in usage_sheet.iter_rows(min_row=6, values_only=True):
+        for row in usage_sheet.iter_rows(min_row=substraction_start_row, values_only=True):
             asset_name, used_quantity = row[1], row[4]
             # print(asset_name, used_quantity)
             # print(row)
 
-            for index, database_row in enumerate(database_sheet.iter_rows(min_row=2, max_row=database_sheet.max_row, values_only=True), start=2):
+            for index, database_row in enumerate(database_sheet.iter_rows(min_row=database_start_row, max_row=database_sheet.max_row, values_only=True), start=2):
                 asset_number, current_quantity = database_row[1], database_row[3]
 
                 if asset_number == asset_name:
@@ -74,6 +80,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
                     if current_quantity is not None and used_quantity is not None:
                         # new_quantity = max(current_quantity - used_quantity, 0)
                         new_quantity = current_quantity - used_quantity
+                        # Here we could modify it to: int(used_quantity.rstrip("m"))
                         modified_cell = database_sheet.cell(
                             row=index, column=4)
                         modified_cell.value = new_quantity
@@ -90,6 +97,7 @@ def update_quantities(database_path, usage_path, done_folder_path):
             f"Te elementy na magazynie maja ujemna wartosc: {negative_record}")
         try:
             print(f"Porces zapisu pliku rozpoczety: {database_path}")
+            database_wb.close()
             database_wb.save(database_path)
             print(f"Proces zapisu zakonczony: {database_path}")
             new_name = todo_file_name.split(".")[0] + datetime.now().strftime(
