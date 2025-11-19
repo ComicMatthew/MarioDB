@@ -69,12 +69,16 @@ def update_quantities(database_path, usage_path, done_folder_path):
         negative_record = []
         for row in usage_sheet.iter_rows(min_row=addition_start_row, values_only=True):
             asset_name, used_quantity = row[1], row[3]
-            # print(asset_name, used_quantity)
-            # print(row)
-
+            print("Usage row:")
+            print(asset_name, used_quantity)
+            print(row)
+            print("--------------------------------")
             for index, database_row in enumerate(database_sheet.iter_rows(min_row=database_start_row, max_row=database_sheet.max_row, values_only=True), start=2):
                 asset_number, current_quantity = database_row[1], database_row[3]
-
+                print("Database row:")
+                print(asset_number, current_quantity)
+                print(database_row)
+                print("--------------------------------")
                 if asset_number == asset_name:
 
                     if current_quantity is not None and used_quantity is not None:

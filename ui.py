@@ -108,7 +108,7 @@ entry_substraction_start_row = tk.Entry(root)
 entry_substraction_start_row.insert(0, substraction_start_row)
 
 label_addition_start_row = tk.Label(
-    root, text="Numer wiersza do odejmowania")
+    root, text="Numer wiersza do dodawania")
 entry_addition_start_row = tk.Entry(root)
 entry_addition_start_row.insert(0, addition_start_row)
 
