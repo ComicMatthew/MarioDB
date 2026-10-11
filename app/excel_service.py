@@ -1,11 +1,34 @@
 import os
 import shutil
+import tempfile
 from datetime import datetime
 from pathlib import Path
 
 import openpyxl
 
 from app.config import load_config
+
+
+def _get_temp_dir() -> Path:
+    root_dir = Path(__file__).resolve().parent.parent
+    temp_dir = root_dir / "temp"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    return temp_dir
+
+
+def _copy_to_temp_file(source_path: str | Path) -> Path:
+    source = Path(source_path)
+    temp_dir = _get_temp_dir()
+    temp_file = temp_dir / f"{source.stem}_{datetime.now().strftime('%Y%m%d%H%M%S%f')}{source.suffix}"
+    shutil.copy2(source, temp_file)
+    return temp_file
+
+
+def _replace_file_with_temp_copy(temp_file: str | Path, target_path: str | Path) -> None:
+    temp_path = Path(temp_file)
+    target = Path(target_path)
+    if temp_path.exists():
+        shutil.copy2(temp_path, target)
 
 
 def _format_value(value):
@@ -42,7 +65,8 @@ def _read_config_values():
 
 
 def find_missing_records(database_path, usage_path, usage_worksheet, database_worksheet, start_row, database_start_row):
-    database_wb = openpyxl.load_workbook(database_path)
+    temp_database_path = _copy_to_temp_file(database_path)
+    database_wb = openpyxl.load_workbook(temp_database_path)
     try:
         todo_file_path, todo_file_name = get_used_file(usage_path)
         usage_wb = openpyxl.load_workbook(todo_file_path)
@@ -71,10 +95,13 @@ def find_missing_records(database_path, usage_path, usage_worksheet, database_wo
         return missing, todo_file_name
     finally:
         database_wb.close()
+        if temp_database_path.exists():
+            temp_database_path.unlink()
 
 
 def update_quantities(database_path, usage_path, done_folder_path, usage_worksheet, database_worksheet, start_row, database_start_row, operation="add"):
-    database_wb = openpyxl.load_workbook(database_path)
+    temp_database_path = _copy_to_temp_file(database_path)
+    database_wb = openpyxl.load_workbook(temp_database_path)
     try:
         todo_file_path, todo_file_name = get_used_file(usage_path)
         usage_wb = openpyxl.load_workbook(todo_file_path)
@@ -116,7 +143,8 @@ def update_quantities(database_path, usage_path, done_folder_path, usage_workshe
                     if new_quantity < 0:
                         negative_record.append(asset_number)
 
-        database_wb.save(database_path)
+        database_wb.save(temp_database_path)
+        _replace_file_with_temp_copy(temp_database_path, database_path)
         new_name = todo_file_name.split(".")[0] + datetime.now().strftime(" %Y-%m-%d %H-%M-%S") + "." + todo_file_name.split(".")[-1]
         done_path = Path(done_folder_path)
         done_path.mkdir(parents=True, exist_ok=True)
@@ -137,6 +165,8 @@ def update_quantities(database_path, usage_path, done_folder_path, usage_workshe
         }
     finally:
         database_wb.close()
+        if temp_database_path.exists():
+            temp_database_path.unlink()
 
 
 def process_subtraction():
