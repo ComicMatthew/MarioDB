@@ -14,4 +14,4 @@ if %ERRORLEVEL% NEQ 0 (
     %PYTHON_CMD% -m pip install openpyxl
 )
 
-start "" %PYTHON_CMD% main.py
+start "" %PYTHON_CMD% -m app

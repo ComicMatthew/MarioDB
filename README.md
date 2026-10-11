@@ -4,8 +4,7 @@ Prosty program do obsługi danych w Excelu z GUI w Tkinter.
 
 ## Struktura projektu
 
-- `main.py` – punkt wejścia do aplikacji
-- `app/` – logika aplikacji
+- `app/` – cała logika aplikacji i punkt wejścia `app/__main__.py`
 - `baza/` – katalog z głównym plikiem bazy
 - `dane/` – foldery robocze
   - `dane/Dodawanie`

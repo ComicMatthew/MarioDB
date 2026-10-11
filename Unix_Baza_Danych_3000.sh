@@ -23,4 +23,4 @@ if [ -z "$PYTHON_BIN" ]; then
 fi
 
 "$PYTHON_BIN" -m pip install openpyxl >/dev/null 2>&1 || true
-exec "$PYTHON_BIN" main.py
+exec "$PYTHON_BIN" -m app
