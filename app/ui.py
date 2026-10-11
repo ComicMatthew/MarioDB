@@ -63,6 +63,7 @@ def build_ui():
     btn_row = row + 1
     tk.Button(root, text="Odejmowanie", command=lambda: run_processor("subtract")).grid(row=btn_row, column=0, padx=5, pady=5, sticky="ew")
     tk.Button(root, text="Dodawanie", command=lambda: run_processor("add")).grid(row=btn_row, column=1, padx=5, pady=5, sticky="ew")
+    tk.Button(root, text="Wyczyść log", command=lambda: log.delete("1.0", tk.END)).grid(row=btn_row + 1, column=0, columnspan=2, padx=5, pady=(0, 5), sticky="ew")
 
     root.mainloop()
 

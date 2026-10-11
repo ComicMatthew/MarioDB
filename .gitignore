@@ -10,6 +10,8 @@ venv/
 
 # project runtime folders (keep local data, do not commit generated files)
 baza/
-# keep user-managed input/output folders but allow empty structure if needed
+# ignore all local input/output files under dane, but keep the folder structure if needed
+dane/*
+dane/**/*
 !dane/
 !dane/**/
