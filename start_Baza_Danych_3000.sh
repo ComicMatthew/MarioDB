@@ -3,6 +3,20 @@ set -u
 
 cd "$(dirname "$0")"
 
+for folder in \
+  "$(pwd)/baza" \
+  "$(pwd)/dane" \
+  "$(pwd)/dane/Dodawanie" \
+  "$(pwd)/dane/Odejmowanie" \
+  "$(pwd)/dane/Gotowe"
+do
+  if [ -e "$folder" ] && [ ! -d "$folder" ]; then
+    echo "Pomijam: $folder istnieje jako plik, nie tworze katalogu." >&2
+    continue
+  fi
+  mkdir -p "$folder"
+done
+
 PYTHON_BIN=""
 for candidate in python3 python; do
   if command -v "$candidate" >/dev/null 2>&1; then
