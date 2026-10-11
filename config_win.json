@@ -1,0 +1,11 @@
+{
+  "database_file_path": "baza\\Kostka Lagerplatz.xlsx",
+  "usage_subtraction_file_path": "dane\\Odejmowanie",
+  "usage_addition_file_path": "dane\\Dodawanie",
+  "done_folder_path": "dane\\Gotowe",
+  "usage_worksheet": "Materialliste",
+  "usage_workdatasheet": "M0129",
+  "substraction_start_row": 2,
+  "addition_start_row": 2,
+  "database_start_row": 2
+}

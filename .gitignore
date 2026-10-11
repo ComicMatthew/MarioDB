@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+*.log
+
+# project runtime folders (keep local data, do not commit generated files)
+baza/
+temp/
+# ignore all local input/output files under dane, but keep the folder structure if needed
+dane/*
+dane/**/*
+!dane/
+!dane/**/
