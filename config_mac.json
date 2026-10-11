@@ -1,8 +1,8 @@
 {
-    "database_file_path": "/Users/mateuszstaniek/Developer/MarioDB/Kostka Lagerplatz.xlsx",
-    "usage_subtraction_file_path": "/Users/mateuszstaniek/Desktop/Mario baza/material do odejmowania",
-    "usage_addition_file_path": "/Users/mateuszstaniek/Developer/MarioDB/dodawanie",
-    "done_folder_path": "/Users/mateuszstaniek/Developer/MarioDB/gotowe",
+    "database_file_path": "baza/Kostka Lagerplatz.xlsx",
+    "usage_subtraction_file_path": "dane/Odejmowanie",
+    "usage_addition_file_path": "dane/Dodawanie",
+    "done_folder_path": "dane/Gotowe",
     "usage_worksheet": "Materialliste",
     "usage_workdatasheet": "M0129",
     "substraction_start_row": "2",
